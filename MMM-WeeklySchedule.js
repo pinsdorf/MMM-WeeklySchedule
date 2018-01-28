@@ -51,7 +51,7 @@ Module.register("MMM-WeeklySchedule", {
 		var date = this.getDisplayDate(); 
 
 		// get day of week and access respective element in lessons array
-		var dow = date.format("ddd").toLowerCase();
+		var dow = date.locale('en').format("ddd").toLowerCase();
 		var lessons = this.config.schedule.lessons[dow];
 
 		// no lessons today, we return default text
@@ -97,7 +97,6 @@ Module.register("MMM-WeeklySchedule", {
 		if(this.config.showNextDayAfter) {
 			var threshold = moment().startOf("day")
 							.add(moment.duration(this.config.showNextDayAfter));
-						// .set({'year': moment().year(), 'month':  moment().month(), 'day':  moment().day()});
 		} else {
 			var threshold = moment().endOf("day");
 		}
@@ -110,7 +109,7 @@ Module.register("MMM-WeeklySchedule", {
 
 		return now;
 	},
-	
+
 	getScripts: function() {
 		return ["moment.js"];
 	},
