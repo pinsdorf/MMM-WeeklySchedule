@@ -1,0 +1,15 @@
+{
+    "name": "MMM-WeeklySchedule",
+    "version": "1.0.0",
+    "description": "Module which shows weekly schedules, such as class timetables, on your MagicMirror",
+    "main": "MagicMirror-WeeklySchedule.js",
+    "author": "Ulrich Pinsdorf",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/pinsdorf/MMM-WeeklySchedule.git"
+    },
+    "dependencies": {
+        "moment": ">=2.20.0"
+    }
+}

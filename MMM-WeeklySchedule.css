@@ -1,0 +1,16 @@
+/*
+ * MMM_WeeklySchedule
+ *
+ * Ulrich Pinsdorf
+ * MIT Licensed.
+ *
+ */
+ .lessontime {
+     text-align: right;
+     width: 1em;
+     padding-right: 2em;
+ }
+
+ .lesson{
+     text-align: left;
+ }
