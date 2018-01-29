@@ -57,11 +57,19 @@ Module.register("MMM-WeeklySchedule", {
 		// no lessons today, we return default text
 		if(lessons == undefined)
 		{
-			var textNode = document.createTextNode(
+			var wrapper = document.createElement("table");
+			var tr = document.createElement("tr");
+			var td = document.createElement("td");
+			var text = document.createTextNode(
 				this.translate("NO_LESSONS")
 			); 
-			textNode.className = "xsmall bright";
-			return textNode;
+			td.className = "xsmall bright lesson";
+
+			wrapper.appendChild(tr);
+			tr.appendChild(td);
+			td.appendChild(text);
+
+			return wrapper;
 		}
 
 		// get timeslots
