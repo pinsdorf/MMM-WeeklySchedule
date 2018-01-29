@@ -57,19 +57,9 @@ Module.register("MMM-WeeklySchedule", {
 		// no lessons today, we return default text
 		if(lessons == undefined)
 		{
-			var wrapper = document.createElement("table");
-			var tr = document.createElement("tr");
-			var td = document.createElement("td");
-			var text = document.createTextNode(
+			return this.createTextOnlyDom(
 				this.translate("NO_LESSONS")
-			); 
-			td.className = "xsmall bright lesson";
-
-			wrapper.appendChild(tr);
-			tr.appendChild(td);
-			td.appendChild(text);
-
-			return wrapper;
+			);
 		}
 
 		// get timeslots
@@ -80,23 +70,7 @@ Module.register("MMM-WeeklySchedule", {
 		for (let index = 0; index < lessons.length; index++) {
 			const lesson = lessons[index];
 			const time = timeslots[index];
-
-			var row = document.createElement("tr");
-			var tdtime = document.createElement("td");
-			tdtime.className = "xsmall dimmed lessontime";
-
-			var tdlesson = document.createElement("td");
-			tdlesson.className = "xsmall bright lesson";
-
-			tdtime.appendChild(
-				document.createTextNode(time)
-			);
-			tdlesson.appendChild(
-				document.createTextNode(lesson)
-			);
-			row.appendChild(tdtime);
-			row.appendChild(tdlesson);
-
+			var row = this.createTimetableRow(time, lesson); 
 			wrapper.appendChild(row);
 		}
 		return wrapper;
@@ -118,6 +92,40 @@ Module.register("MMM-WeeklySchedule", {
 		}
 
 		return now;
+	},
+
+	createTextOnlyDom: function(text) {
+		var wrapper = document.createElement("table");
+		var tr = document.createElement("tr");
+		var td = document.createElement("td");
+		var text = document.createTextNode(text); 
+		td.className = "xsmall bright lesson";
+
+		wrapper.appendChild(tr);
+		tr.appendChild(td);
+		td.appendChild(text);
+
+		return wrapper;
+	},
+
+	createTimetableRow: function(time, lesson) {
+		var row = document.createElement("tr");
+
+		var tdtime = document.createElement("td");
+		tdtime.className = "xsmall dimmed lessontime";
+		tdtime.appendChild(
+			document.createTextNode(time)
+		);
+		row.appendChild(tdtime);
+
+		var tdlesson = document.createElement("td");
+		tdlesson.className = "xsmall bright lesson";
+		tdlesson.appendChild(
+			document.createTextNode(lesson)
+		);
+		row.appendChild(tdlesson);
+
+		return row;
 	},
 
 	getScripts: function() {
