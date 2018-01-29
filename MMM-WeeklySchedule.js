@@ -39,7 +39,7 @@ Module.register("MMM-WeeklySchedule", {
 	getHeader: function() {
 		var header = this.data.header;
 		if(this.config.showWeekdayinHeader) {
-			header += " on " + this.getDisplayDate().format("dddd"); 
+			header += " " + this.translate("ON_DAY") + " " + this.getDisplayDate().format("dddd"); 
 		}
 		return header;
 	},
@@ -57,7 +57,9 @@ Module.register("MMM-WeeklySchedule", {
 		// no lessons today, we return default text
 		if(lessons == undefined)
 		{
-			var textNode = document.createTextNode("No lessons"); 
+			var textNode = document.createTextNode(
+				this.translate("NO_LESSONS")
+			); 
 			textNode.className = "xsmall bright";
 			return textNode;
 		}
@@ -119,4 +121,12 @@ Module.register("MMM-WeeklySchedule", {
 			this.config.customCssFile
 		];
 	},
+
+	getTranslations: function() {
+		return {
+				en: "translations/en.json",
+				de: "translations/de.json"
+		}
+	}
+
 });
