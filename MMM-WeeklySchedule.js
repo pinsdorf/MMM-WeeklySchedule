@@ -13,7 +13,7 @@ Module.register("MMM-WeeklySchedule", {
 		showWeekdayinHeader: true,
 		updateInterval: 1 * 60 * 60 * 1000,     // 1 hour
 		showNextDayAfter: "16:00",
-		fadeSeed: 4000,
+		fadeSpeed: 4000,
 		debug: true
 	},
 
