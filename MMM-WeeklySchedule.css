@@ -7,8 +7,9 @@
  */
  .lessontime {
      text-align: right;
-     width: 1em;
+     white-space: nowrap;
      padding-right: 2em;
+     width: 1ex;
  }
 
  .lesson{
