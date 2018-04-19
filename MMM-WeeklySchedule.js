@@ -70,8 +70,13 @@ Module.register("MMM-WeeklySchedule", {
 		for (let index = 0; index < lessons.length; index++) {
 			const lesson = lessons[index];
 			const time = timeslots[index];
-			var row = this.createTimetableRow(time, lesson); 
-			wrapper.appendChild(row);
+            
+            // only create a row if the timeslot's lesson is defined and not an empty string
+            if(lesson)
+            {
+              var row = this.createTimetableRow(time, lesson); 
+			  wrapper.appendChild(row);
+            }
 		}
 		return wrapper;
 	},
