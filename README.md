@@ -55,6 +55,7 @@ The module is localized for English (en) and German (de). More input is very wel
         },
         updateInterval: 1 * 60 * 60 * 1000, // every hour
         showNextDayAfter: "16:00"
+    }
 },
 ```
 
