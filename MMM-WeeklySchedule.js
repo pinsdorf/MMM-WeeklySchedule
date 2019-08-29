@@ -146,7 +146,8 @@ Module.register("MMM-WeeklySchedule", {
 	getTranslations: function() {
 		return {
 				en: "translations/en.json",
-				de: "translations/de.json"
+				de: "translations/de.json",
+				sv: "translations/sv.json"
 		}
 	}
 
