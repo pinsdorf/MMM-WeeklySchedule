@@ -28,6 +28,7 @@ The entry in `config.js` can include the following options:
 |`updateInterval`|How often the content is updated.<br>**Default value:** `1 • 60 • 60 • 1000` // every 1 hour |
 |`showWeekdayinHeader`|Appends the module `header`text with weekday name, e.g., *on Monday*<br>**Default value:** `true`|
 |`showNextDayAfter`|From this time of the day on the module shows the schedule of the *next* day. This is helpful when, e.g., a school day is over and you want to show what is up tomorrow. If you don't like this set the value to `23:59` or `undefined`. <br>**Default value:** `16:00`|
+|`allowHTML`|Whether timeslot and lesson texts can contain HTML. Can for example be used to color certain lessons.<br>**Default value:** `false`|
 
 Below is an example of an configuration entry in `config.js`. Make sure that the days of week (mon, tue, wed, ...) are all lower case. The `timeslots` arrays shall have at least the same length as the longest array in `lessons.*`. In other words, make sure each `lesson` entry has a `timeslot` value.
 
