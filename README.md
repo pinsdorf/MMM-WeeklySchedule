@@ -87,6 +87,64 @@ And here is the configuaration for this example.
     }
 },
 ```
+Setting `allowHTML` to true gives you the possibility to color texts, add images or include any HTML. Here's an example to add red text for reminders:
+
+![](screenshot3.png?raw=true)
+
+Configuration for the above example:
+
+```
+{
+	module: "MMM-WeeklySchedule",
+	position: "top_left",
+	header: "Activity",
+	config: {
+		schedule: {
+			timeslots: [ "Activity", "Remember" ],
+			lessons: {
+				mon: [ "Running", "<span style='color: #ff5000'>Charge GPS watch!</span>" ],
+				tue: [ "Swimming", "" ],
+				thu: [ "Cycling", "" ],
+				sat: [ "Bowling", "<span style='color: #ff5000'>Bring bowling ball!</span>" ],
+			}
+		},
+		updateInterval: 1 * 60 * 60 * 1000, // every hour
+		showNextDayAfter: "21:00",
+		allowHTML: true
+	}
+},
+```
+
+And another example using images:
+
+![](screenshot4.png?raw=true)
+
+Configuration for the above example:
+
+```
+{
+	module: "MMM-WeeklySchedule",
+	position: "top_left",
+	header: "",
+	config: {
+		schedule: {
+			timeslots: [ "Fruit of the day" ],
+			lessons: {
+				mon: [ "<img src='https://img.icons8.com/metro/35/ffffff/pear.png' />" ],
+				tue: [ "<img src='https://img.icons8.com/metro/35/ffffff/citrus.png' />" ],
+				wed: [ "<img src='https://img.icons8.com/metro/35/ffffff/kiwi.png' />" ],
+				thu: [ "<img src='https://img.icons8.com/metro/35/ffffff/strawberry.png' />" ],
+				fri: [ "<img src='https://img.icons8.com/metro/35/ffffff/apple.png' />" ],
+				sat: [ "<img src='https://img.icons8.com/metro/35/ffffff/grapes.png' />" ],
+				sun: [ "<img src='https://img.icons8.com/metro/35/ffffff/watermelon.png' />" ],
+			}
+		},
+		updateInterval: 1 * 60 * 60 * 1000, // every hour
+		showNextDayAfter: undefined,
+		allowHTML: true
+	}
+},
+```
 
 ## Dependencies
 - [moment](https://www.npmjs.com/package/moment) (installed via `npm install`)
