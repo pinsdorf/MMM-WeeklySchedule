@@ -14,6 +14,7 @@ Module.register("MMM-WeeklySchedule", {
 		updateInterval: 1 * 60 * 60 * 1000,     // 1 hour
 		showNextDayAfter: "16:00",
 		fadeSpeed: 4000,
+		allowHTML: false,
 		debug: true
 	},
 
@@ -118,16 +119,24 @@ Module.register("MMM-WeeklySchedule", {
 
 		var tdtime = document.createElement("td");
 		tdtime.className = "xsmall dimmed lessontime";
-		tdtime.appendChild(
-			document.createTextNode(time)
-		);
+		if (this.config.allowHTML) {
+			tdtime.innerHTML  = time;
+		} else {
+			tdtime.appendChild(
+				document.createTextNode(time)
+			);
+		}
 		row.appendChild(tdtime);
 
 		var tdlesson = document.createElement("td");
 		tdlesson.className = "xsmall bright lesson";
-		tdlesson.appendChild(
-			document.createTextNode(lesson)
-		);
+		if (this.config.allowHTML) {
+			tdlesson.innerHTML  = lesson;
+		} else {
+			tdlesson.appendChild(
+				document.createTextNode(lesson)
+			);
+		}
 		row.appendChild(tdlesson);
 
 		return row;

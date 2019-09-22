@@ -28,12 +28,13 @@ The entry in `config.js` can include the following options:
 |`updateInterval`|How often the content is updated.<br>**Default value:** `1 • 60 • 60 • 1000` // every 1 hour |
 |`showWeekdayinHeader`|Appends the module `header`text with weekday name, e.g., *on Monday*<br>**Default value:** `true`|
 |`showNextDayAfter`|From this time of the day on the module shows the schedule of the *next* day. This is helpful when, e.g., a school day is over and you want to show what is up tomorrow. If you don't like this set the value to `23:59` or `undefined`. <br>**Default value:** `16:00`|
+|`allowHTML`|Whether timeslot and lesson texts can contain HTML. Can for example be used to color certain lessons.<br>**Default value:** `false`|
 
 Below is an example of an configuration entry in `config.js`. Make sure that the days of week (mon, tue, wed, ...) are all lower case. The `timeslots` arrays shall have at least the same length as the longest array in `lessons.*`. In other words, make sure each `lesson` entry has a `timeslot` value.
 
 If you want to show no entry at a particular time simply put an empty string as in the example below (cf. first entry for `tue` and `sun`). You can omit one or many weekdays (cf. entry for `sat`). On days without lessons the module shows the text *no lessons*.
 
-The module is localized for English (en) and German (de). More input is very welcome. 
+The module is localized for English (en), German (de), Swedish (sv) and Danish (da). More input is very welcome. 
 
 ```
 {
@@ -84,6 +85,64 @@ And here is the configuaration for this example.
             updateInterval: 1 * 60 * 60 * 1000, // every hour
             showNextDayAfter: undefined
     }
+},
+```
+Setting `allowHTML` to true gives you the possibility to color texts, add images or include any HTML. Here's an example to add red text for reminders:
+
+![](screenshot3.png?raw=true)
+
+Configuration for the above example:
+
+```
+{
+	module: "MMM-WeeklySchedule",
+	position: "top_left",
+	header: "Activity",
+	config: {
+		schedule: {
+			timeslots: [ "Activity", "Remember" ],
+			lessons: {
+				mon: [ "Running", "<span style='color: #ff5000'>Charge GPS watch!</span>" ],
+				tue: [ "Swimming", "" ],
+				thu: [ "Cycling", "" ],
+				sat: [ "Bowling", "<span style='color: #ff5000'>Bring bowling ball!</span>" ],
+			}
+		},
+		updateInterval: 1 * 60 * 60 * 1000, // every hour
+		showNextDayAfter: "21:00",
+		allowHTML: true
+	}
+},
+```
+
+And another example using images:
+
+![](screenshot4.png?raw=true)
+
+Configuration for the above example:
+
+```
+{
+	module: "MMM-WeeklySchedule",
+	position: "top_left",
+	header: "",
+	config: {
+		schedule: {
+			timeslots: [ "Fruit of the day" ],
+			lessons: {
+				mon: [ "<img src='https://img.icons8.com/metro/35/ffffff/pear.png' />" ],
+				tue: [ "<img src='https://img.icons8.com/metro/35/ffffff/citrus.png' />" ],
+				wed: [ "<img src='https://img.icons8.com/metro/35/ffffff/kiwi.png' />" ],
+				thu: [ "<img src='https://img.icons8.com/metro/35/ffffff/strawberry.png' />" ],
+				fri: [ "<img src='https://img.icons8.com/metro/35/ffffff/apple.png' />" ],
+				sat: [ "<img src='https://img.icons8.com/metro/35/ffffff/grapes.png' />" ],
+				sun: [ "<img src='https://img.icons8.com/metro/35/ffffff/watermelon.png' />" ],
+			}
+		},
+		updateInterval: 1 * 60 * 60 * 1000, // every hour
+		showNextDayAfter: undefined,
+		allowHTML: true
+	}
 },
 ```
 
