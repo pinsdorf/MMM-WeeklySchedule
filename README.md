@@ -34,7 +34,7 @@ Below is an example of an configuration entry in `config.js`. Make sure that the
 
 If you want to show no entry at a particular time simply put an empty string as in the example below (cf. first entry for `tue` and `sun`). You can omit one or many weekdays (cf. entry for `sat`). On days without lessons the module shows the text *no lessons*.
 
-The module is localized for English (en), German (de), Swedish (se) and Danish (da). More input is very welcome. 
+The module is localized for English (en), German (de), Swedish (sv) and Danish (da). More input is very welcome. 
 
 ```
 {
