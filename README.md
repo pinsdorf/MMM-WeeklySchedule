@@ -11,7 +11,7 @@ This a module for the [MagicMirror](https://github.com/MichMich/MagicMirror). It
 
 ## Preview
 
-![](screenshot.png)
+![](images/screenshot.png)
 
 ## Installation
 1. Navigate into your MagicMirror's `modules` folder. 
@@ -62,7 +62,7 @@ The module is localized for English (en), German (de), Swedish (sv) and Danish (
 
 The values in the `timeslots` array don't need to be a time. It is merely an arbitrary string. This allows to use the module also to announce shared workload like household chores. The screenshot below shows an example. 
 
-![](screenshot2.png?raw=true)
+![](images/screenshot2.png?raw=true)
 
 And here is the configuaration for this example. 
 
@@ -89,7 +89,7 @@ And here is the configuaration for this example.
 ```
 Setting `allowHTML` to true gives you the possibility to color texts, add images or include any HTML. Here's an example to add red text for reminders:
 
-![](screenshot3.png?raw=true)
+![](images/screenshot3.png?raw=true)
 
 Configuration for the above example:
 
@@ -117,7 +117,7 @@ Configuration for the above example:
 
 And another example using images:
 
-![](screenshot4.png?raw=true)
+![](images/screenshot4.png?raw=true)
 
 Configuration for the above example:
 
