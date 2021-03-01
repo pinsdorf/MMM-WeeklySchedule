@@ -36,7 +36,7 @@ If you want to show no entry at a particular time simply put an empty string as 
 
 The module is localized for English (en), German (de), Swedish (sv) and Danish (da). More input is very welcome. 
 
-```
+``` js
 {
     module: "MMM-WeeklySchedule",
     position: "top_left",
@@ -66,7 +66,7 @@ The values in the `timeslots` array don't need to be a time. It is merely an arb
 
 And here is the configuaration for this example. 
 
-```
+``` js
 {
     module: "MMM-WeeklySchedule",
     position: "top_left",
@@ -93,7 +93,7 @@ Setting `allowHTML` to true gives you the possibility to color texts, add images
 
 Configuration for the above example:
 
-```
+``` js
 {
 	module: "MMM-WeeklySchedule",
 	position: "top_left",
@@ -121,7 +121,7 @@ And another example using images:
 
 Configuration for the above example:
 
-```
+``` js
 {
 	module: "MMM-WeeklySchedule",
 	position: "top_left",
