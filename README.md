@@ -9,17 +9,17 @@ This a module for the [MagicMirror](https://github.com/MichMich/MagicMirror). It
 * household chores
 * opening hours of bakery, post office, supermarket 
 
-## Preview
+# Preview
 
 ![](images/screenshot.png)
 
-## Installation
+# Installation
 1. Navigate into your MagicMirror's `modules` folder. 
 2. Execute `git clone https://github.com/pinsdorf/MMM-WeeklySchedule.git`. A new folder will appear. 
 3. Navigate into folder `MMM-WeeklySchedule`.
 4. Execute `npm install` to install the node dependencies.
 
-## Config
+# Config
 The entry in `config.js` can include the following options:
 
 |Option|Description|
@@ -33,8 +33,6 @@ The entry in `config.js` can include the following options:
 Below is an example of an configuration entry in `config.js`. Make sure that the days of week (mon, tue, wed, ...) are all lower case. The `timeslots` arrays shall have at least the same length as the longest array in `lessons.*`. In other words, make sure each `lesson` entry has a `timeslot` value.
 
 If you want to show no entry at a particular time simply put an empty string as in the example below (cf. first entry for `tue` and `sun`). You can omit one or many weekdays (cf. entry for `sat`). On days without lessons the module shows the text *no lessons*.
-
-The module is localized for English (en), German (de), Swedish (sv) and Danish (da). More input is very welcome. 
 
 ``` js
 {
@@ -87,6 +85,9 @@ And here is the configuaration for this example.
     }
 },
 ```
+
+# Use HTML markup in schedules 
+
 Setting `allowHTML` to true gives you the possibility to color texts, add images or include any HTML. Here's an example to add red text for reminders:
 
 ![](images/screenshot3.png?raw=true)
@@ -146,12 +147,28 @@ Configuration for the above example:
 },
 ```
 
-## Dependencies
+# Localization
+Thanks to many contributions by the community this module has been localized for a number of languages already. More input is very welcome.
+
+|Locale|Language            |
+|------|--------------------|
+|da    | Danish             |
+|de    | German             |
+|en    | English            |
+|he    | Hebrew             |
+|hu    | Hungary            |
+|nb    | Norwegian Bokmål   |
+|nn    | Norwegian          |
+|pl    | Polish             |
+|sv    | Swedish            |
+|zh-cn | Simplified Chinese |
+
+# Dependencies
 - [moment](https://www.npmjs.com/package/moment) (installed via `npm install`)
 
-## Notes
+# Notes
 - This is my first project using Node, so feel free to submit pull requests or post on the issues and I will do my best to improve the project.
 
-## Special Thanks
+# Special Thanks
 - [Michael Teeuw](https://github.com/MichMich) for creating the awesome [MagicMirror2](https://github.com/MichMich/MagicMirror/tree/develop) project that made this module possible.
 - [LukeSkywalker92](https://github.com/LukeSkywalker92) for creating the [MMM-DWD-WarnWeather](https://github.com/LukeSkywalker92/MMM-DWD-WarnWeather) module that I used as guidance in creating this module.
