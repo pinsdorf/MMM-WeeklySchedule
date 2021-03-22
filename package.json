@@ -10,10 +10,13 @@
         "url": "git+https://github.com/pinsdorf/MMM-WeeklySchedule.git"
     },
     "scripts": {
-        "lint": "./node_modules/.bin/eslint --fix ."
+        "lint": "./node_modules/.bin/eslint --fix . test",
+        "test": "npm run lint && mocha --exit --timeout 10000 --bail test/**/*.spec.js"
     },
     "dependencies": {
-        "moment": ">=2.20.0",
-        "eslint": ">=4.18.0"
+        "moment": "2.29.1",
+        "eslint": "7.22",
+        "mocha": "8.3.2",
+        "chai": "4.3.4"
     }
 }
