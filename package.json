@@ -9,7 +9,11 @@
         "type": "git",
         "url": "git+https://github.com/pinsdorf/MMM-WeeklySchedule.git"
     },
+    "scripts": {
+        "lint": "./node_modules/.bin/eslint ."
+    },
     "dependencies": {
-        "moment": ">=2.20.0"
+        "moment": ">=2.20.0",
+        "eslint": ">=4.18.0",
     }
 }
