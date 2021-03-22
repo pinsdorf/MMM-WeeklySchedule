@@ -191,6 +191,6 @@
     "max-params": 0,
     "max-statements": 0,
     "no-bitwise": [2, { "allow": ["~"] }],
-    "no-plusplus": 2
+    "no-plusplus": 0
 }
 }

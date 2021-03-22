@@ -51,27 +51,33 @@ Module.register('MMM-WeeklySchedule', {
 	 * Create the DOM to show content
 	 */
   getDom: function() {
-    var date = this.getDisplayDate(); 
-
-    // determine type of schedule (single vs multi)
+    var date; 
+    var idx;
     var weekschedule;
-
+    var dow;
+    var lessons; 
+    var timeslots;
+    var row;
+	
+    // determine type of schedule (single vs multi)
+    date = this.getDisplayDate();
+	
     if (this.config.schedule) {
       // found a single schedule, it shall override multischedule
       weekschedule = this.config.schedule; 
     } else if (this.config.multischedule) {
       // we have a multi-schedule: let's first check if required parameters are present
-      if (this.config.weekpattern == undefined) {
+      if (this.config.weekpattern === undefined) {
         return this.createTextOnlyDom('Error: no weekpattern defined');
       }
-      if (this.config.startdate == undefined) {
+      if (this.config.startdate === undefined) {
         return this.createTextOnlyDom('Error: no startdate defined');
       }
 
       // fine, now we have to determine what is the right week
-      var idx = getWeekFromPattern(date, startdate, pattern);
+      idx = getWeekFromPattern(date, startdate, pattern);
 
-      if (idx == undefined) {
+      if (idx === undefined) {
         return this.createTextOnlyDom(
           this.translate('NO_LESSONS')
         );
@@ -82,18 +88,18 @@ Module.register('MMM-WeeklySchedule', {
     }
 
     // get day of week and access respective element in lessons array
-    var dow = date.locale('en').format('ddd').toLowerCase();
-    var lessons = weekschedule.lessons[dow];
+    dow = date.locale('en').format('ddd').toLowerCase();
+    lessons = weekschedule.lessons[dow];
 
     // no lessons today, we return default text
-    if (lessons == undefined) {
+    if (lessons === undefined) {
       return this.createTextOnlyDom(
         this.translate('NO_LESSONS')
       );
     }
 
     // get timeslots
-    var timeslots = weekschedule.timeslots;
+    timeslots = weekschedule.timeslots;
 
     // build table with timeslot definitions and lessons
     wrapper = document.createElement('table');
@@ -103,8 +109,7 @@ Module.register('MMM-WeeklySchedule', {
 
       // only create a row if the timeslot's lesson is defined and not an empty string
       if (lesson) {
-        var row = this.createTimetableRow(time, lesson); 
-
+        row = this.createTimetableRow(time, lesson); 
         wrapper.appendChild(row);
       }
     }
@@ -112,16 +117,19 @@ Module.register('MMM-WeeklySchedule', {
   },
 
   getDisplayDate: function() {
+    var threshold; 
+    var now; 
+
     // check if config contains a threshold 'showNextDayAfter'
     if (this.config.showNextDayAfter) {
-      var threshold = moment().startOf('day')
+      threshold = moment().startOf('day')
         .add(moment.duration(this.config.showNextDayAfter));
     } else {
-      var threshold = moment().endOf('day');
+      threshold = moment().endOf('day');
     }
 		
     // get the current time and increment by one day if threshold time has passed
-    var now = moment();
+    now = moment();
 
     if (now.isAfter(threshold)) {
       now = now.add(1, 'day');
@@ -131,17 +139,21 @@ Module.register('MMM-WeeklySchedule', {
   },
 
   getWeekFromPattern: function(today, startdate, pattern) {
+    var m_today;
+    var m_startdate;
+    var index;
+
     // startdate of pattern is in future
-    var m_today = moment(today);
-    var m_startdate = moment(startdate, 'YYYY-MM-DD'); 
+    m_today = moment(today);
+    m_startdate = moment(startdate, 'YYYY-MM-DD'); 
 
     if (m_today.isAfter(m_startdate)) {return undefined;}
 
     // no proper pattern defined
-    if (pattern.length == 0) {return undefined;}
+    if (pattern.length === 0) {return undefined;}
 
     // we iterate through weeks until we find today's week
-    var index = 0;
+    index = 0;
 
     while (m_startdate.isBefore(m_today, 'week')) {
       index = (index + 1) % pattern.length;
@@ -152,11 +164,11 @@ Module.register('MMM-WeeklySchedule', {
     return pattern.charAt(index);
   },
 
-  createTextOnlyDom: function(text) {
+  createTextOnlyDom: function(str) {
     var wrapper = document.createElement('table');
     var tr = document.createElement('tr');
     var td = document.createElement('td');
-    var text = document.createTextNode(text); 
+    var text = document.createTextNode(str); 
 
     td.className = 'xsmall bright lesson';
 
@@ -168,10 +180,12 @@ Module.register('MMM-WeeklySchedule', {
   },
 
   createTimetableRow: function(time, lesson) {
-    var row = document.createElement('tr');
+    var row;
+    var tdtime;
+    var tdlesson;
 
-    var tdtime = document.createElement('td');
-
+    row = document.createElement('tr');
+    tdtime = document.createElement('td');
     tdtime.className = 'xsmall dimmed lessontime';
     if (this.config.allowHTML) {
       tdtime.innerHTML = time;
@@ -182,8 +196,7 @@ Module.register('MMM-WeeklySchedule', {
     }
     row.appendChild(tdtime);
 
-    var tdlesson = document.createElement('td');
-
+    tdlesson = document.createElement('td');
     tdlesson.className = 'xsmall bright lesson';
     if (this.config.allowHTML) {
       tdlesson.innerHTML = lesson;
