@@ -51,9 +51,43 @@ Module.register("MMM-WeeklySchedule", {
 	getDom: function() {
 		var date = this.getDisplayDate(); 
 
+		// determine type of schedule (single vs multi)
+		var weekschedule;
+		if(this.config.schedule)
+		{
+			// found a single schedule, it shall override multischedule
+			weekschedule = this.config.schedule; 
+		}
+		else if(this.config.multischedule)
+		{
+			// we have a multi-schedule: let's first check if required parameters are present
+			if(this.config.weekpattern == undefined)
+			{
+				return this.createTextOnlyDom("Error: no weekpattern defined");
+			}
+			if(this.config.startdate == undefined)
+			{
+				return this.createTextOnlyDom("Error: no startdate defined");
+			}
+
+			// fine, now we have to determine what is the right week
+			var idx = getWeekFromPattern(date, startdate, pattern);
+			if(idx == undefined)
+			{
+				return this.createTextOnlyDom(
+					this.translate("NO_LESSONS")
+				);
+			}
+			weekschedule = this.config.multischedule[idx];
+		}
+		else 
+		{
+			return this.createTextOnlyDom("Error: neither schedule nor multischedule defined in configuration");
+		}
+
 		// get day of week and access respective element in lessons array
 		var dow = date.locale('en').format("ddd").toLowerCase();
-		var lessons = this.config.schedule.lessons[dow];
+		var lessons = weekschedule.lessons[dow];
 
 		// no lessons today, we return default text
 		if(lessons == undefined)
@@ -64,7 +98,7 @@ Module.register("MMM-WeeklySchedule", {
 		}
 
 		// get timeslots
-		var timeslots = this.config.schedule.timeslots;
+		var timeslots = weekschedule.timeslots;
 
 		// build table with timeslot definitions and lessons
 		wrapper = document.createElement("table");
@@ -98,6 +132,29 @@ Module.register("MMM-WeeklySchedule", {
 		}
 
 		return now;
+	},
+
+	getWeekFromPattern: function(today, startdate, pattern) {
+		// startdate of pattern is in future
+		var m_today = moment(today);
+		var m_startdate = moment(startdate, "YYYY-MM-DD"); 
+		if(m_today.isAfter(m_startdate)) 
+		    return undefined;
+
+		// no proper pattern defined
+		if(pattern.length == 0) 
+		    return undefined;
+
+		// we iterate through weeks until we find today's week
+		var index = 0;
+		while(m_startdate.isBefore(m_today, "week"))
+		{
+			index = (index + 1) % pattern.length;
+			m_startdate.add(1, 'week');
+		}
+
+		// and return the respective identifier from the pattern
+		return pattern.charAt(index);
 	},
 
 	createTextOnlyDom: function(text) {
@@ -154,16 +211,17 @@ Module.register("MMM-WeeklySchedule", {
 
 	getTranslations: function() {
 		return {
-				en: "translations/en.json",
-				de: "translations/de.json",
-				sv: "translations/sv.json",
-				nb: "translations/nb.json",
-				nn: "translations/nn.json",
-				he: "translations/he.json",
-				hu: "translations/hu.json",
-				da: "translations/da.json",
-				pl: "translations/pl.json",
-				"zh-cn": "translations/zh-cn.json"
+			da: "translations/da.json",
+			de: "translations/de.json",
+			en: "translations/en.json",
+			fr: "translations/fr.json",
+			he: "translations/he.json",
+			hu: "translations/hu.json",
+			nb: "translations/nb.json",
+			nn: "translations/nn.json",
+			pl: "translations/pl.json",
+			sv: "translations/sv.json",
+			"zh-cn": "translations/zh-cn.json"
 		}
 	}
 
