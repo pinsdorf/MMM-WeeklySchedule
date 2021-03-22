@@ -6,223 +6,221 @@
  * MIT Licensed.
  */
 
-Module.register("MMM-WeeklySchedule", {
+Module.register('MMM-WeeklySchedule', {
 
-	defaults: {
-		customCssFile: "MMM-WeeklySchedule.css",
-		showWeekdayinHeader: true,
-		updateInterval: 1 * 60 * 60 * 1000,     // 1 hour
-		showNextDayAfter: "16:00",
-		fadeSpeed: 4000,
-		allowHTML: false,
-		debug: true
-	},
+  defaults: {
+    customCssFile: 'MMM-WeeklySchedule.css',
+    showWeekdayinHeader: true,
+    updateInterval: 1 * 60 * 60 * 1000, // 1 hour
+    showNextDayAfter: '16:00',
+    fadeSpeed: 4000,
+    allowHTML: false,
+    debug: true
+  },
 
-	requiresVersion: "2.1.0", // Required version of MagicMirror
+  requiresVersion: '2.1.0', // Required version of MagicMirror
 
-	/* start()
+  /* start()
 	 * Start module after all modules have been loaded
 	 * by the MagicMirror framework
 	 */
-	start: function() {
-		// Schedule update timer.
-		var self = this;
-		setInterval(function() {
-			self.updateDom(self.config.fadeSpeed);
-		}, this.config.updateInterval);
+  start: function() {
+    // Schedule update timer.
+    var self = this;
 
-		this.loaded = true;		
-	},
+    setInterval(function() {
+      self.updateDom(self.config.fadeSpeed);
+    }, this.config.updateInterval);
 
-	/* getHeader()
+    this.loaded = true;		
+  },
+
+  /* getHeader()
 	 * Create the module header. Regards configuration showWeekdayinHeader 
 	 */
-	getHeader: function() {
-		var header = this.data.header;
-		if(this.config.showWeekdayinHeader) {
-			header += " " + this.translate("ON_DAY") + " " + this.getDisplayDate().format("dddd"); 
-		}
-		return header;
-	},
+  getHeader: function() {
+    var header = this.data.header;
 
-	/* getDom()
+    if (this.config.showWeekdayinHeader) {
+      header += ' ' + this.translate('ON_DAY') + ' ' + this.getDisplayDate().format('dddd'); 
+    }
+    return header;
+  },
+
+  /* getDom()
 	 * Create the DOM to show content
 	 */
-	getDom: function() {
-		var date = this.getDisplayDate(); 
+  getDom: function() {
+    var date = this.getDisplayDate(); 
 
-		// determine type of schedule (single vs multi)
-		var weekschedule;
-		if(this.config.schedule)
-		{
-			// found a single schedule, it shall override multischedule
-			weekschedule = this.config.schedule; 
-		}
-		else if(this.config.multischedule)
-		{
-			// we have a multi-schedule: let's first check if required parameters are present
-			if(this.config.weekpattern == undefined)
-			{
-				return this.createTextOnlyDom("Error: no weekpattern defined");
-			}
-			if(this.config.startdate == undefined)
-			{
-				return this.createTextOnlyDom("Error: no startdate defined");
-			}
+    // determine type of schedule (single vs multi)
+    var weekschedule;
 
-			// fine, now we have to determine what is the right week
-			var idx = getWeekFromPattern(date, startdate, pattern);
-			if(idx == undefined)
-			{
-				return this.createTextOnlyDom(
-					this.translate("NO_LESSONS")
-				);
-			}
-			weekschedule = this.config.multischedule[idx];
-		}
-		else 
-		{
-			return this.createTextOnlyDom("Error: neither schedule nor multischedule defined in configuration");
-		}
+    if (this.config.schedule) {
+      // found a single schedule, it shall override multischedule
+      weekschedule = this.config.schedule; 
+    } else if (this.config.multischedule) {
+      // we have a multi-schedule: let's first check if required parameters are present
+      if (this.config.weekpattern == undefined) {
+        return this.createTextOnlyDom('Error: no weekpattern defined');
+      }
+      if (this.config.startdate == undefined) {
+        return this.createTextOnlyDom('Error: no startdate defined');
+      }
 
-		// get day of week and access respective element in lessons array
-		var dow = date.locale('en').format("ddd").toLowerCase();
-		var lessons = weekschedule.lessons[dow];
+      // fine, now we have to determine what is the right week
+      var idx = getWeekFromPattern(date, startdate, pattern);
 
-		// no lessons today, we return default text
-		if(lessons == undefined)
-		{
-			return this.createTextOnlyDom(
-				this.translate("NO_LESSONS")
-			);
-		}
+      if (idx == undefined) {
+        return this.createTextOnlyDom(
+          this.translate('NO_LESSONS')
+        );
+      }
+      weekschedule = this.config.multischedule[idx];
+    } else {
+      return this.createTextOnlyDom('Error: neither schedule nor multischedule defined in configuration');
+    }
 
-		// get timeslots
-		var timeslots = weekschedule.timeslots;
+    // get day of week and access respective element in lessons array
+    var dow = date.locale('en').format('ddd').toLowerCase();
+    var lessons = weekschedule.lessons[dow];
 
-		// build table with timeslot definitions and lessons
-		wrapper = document.createElement("table");
-		for (let index = 0; index < lessons.length; index++) {
-			const lesson = lessons[index];
-			const time = timeslots[index];
+    // no lessons today, we return default text
+    if (lessons == undefined) {
+      return this.createTextOnlyDom(
+        this.translate('NO_LESSONS')
+      );
+    }
 
-			// only create a row if the timeslot's lesson is defined and not an empty string
-			if(lesson)
-			{
-				var row = this.createTimetableRow(time, lesson); 
-				wrapper.appendChild(row);
-			}
-		}
-		return wrapper;
-	},
+    // get timeslots
+    var timeslots = weekschedule.timeslots;
 
-	getDisplayDate: function() {
-		// check if config contains a threshold 'showNextDayAfter'
-		if(this.config.showNextDayAfter) {
-			var threshold = moment().startOf("day")
-							.add(moment.duration(this.config.showNextDayAfter));
-		} else {
-			var threshold = moment().endOf("day");
-		}
+    // build table with timeslot definitions and lessons
+    wrapper = document.createElement('table');
+    for (let index = 0; index < lessons.length; index++) {
+      const lesson = lessons[index];
+      const time = timeslots[index];
+
+      // only create a row if the timeslot's lesson is defined and not an empty string
+      if (lesson) {
+        var row = this.createTimetableRow(time, lesson); 
+
+        wrapper.appendChild(row);
+      }
+    }
+    return wrapper;
+  },
+
+  getDisplayDate: function() {
+    // check if config contains a threshold 'showNextDayAfter'
+    if (this.config.showNextDayAfter) {
+      var threshold = moment().startOf('day')
+        .add(moment.duration(this.config.showNextDayAfter));
+    } else {
+      var threshold = moment().endOf('day');
+    }
 		
-		// get the current time and increment by one day if threshold time has passed
-		var now  = moment();
-		if(now.isAfter(threshold)) {
-			now = now.add(1, "day");
-		}
+    // get the current time and increment by one day if threshold time has passed
+    var now = moment();
 
-		return now;
-	},
+    if (now.isAfter(threshold)) {
+      now = now.add(1, 'day');
+    }
 
-	getWeekFromPattern: function(today, startdate, pattern) {
-		// startdate of pattern is in future
-		var m_today = moment(today);
-		var m_startdate = moment(startdate, "YYYY-MM-DD"); 
-		if(m_today.isAfter(m_startdate)) 
-		    return undefined;
+    return now;
+  },
 
-		// no proper pattern defined
-		if(pattern.length == 0) 
-		    return undefined;
+  getWeekFromPattern: function(today, startdate, pattern) {
+    // startdate of pattern is in future
+    var m_today = moment(today);
+    var m_startdate = moment(startdate, 'YYYY-MM-DD'); 
 
-		// we iterate through weeks until we find today's week
-		var index = 0;
-		while(m_startdate.isBefore(m_today, "week"))
-		{
-			index = (index + 1) % pattern.length;
-			m_startdate.add(1, 'week');
-		}
+    if (m_today.isAfter(m_startdate)) {return undefined;}
 
-		// and return the respective identifier from the pattern
-		return pattern.charAt(index);
-	},
+    // no proper pattern defined
+    if (pattern.length == 0) {return undefined;}
 
-	createTextOnlyDom: function(text) {
-		var wrapper = document.createElement("table");
-		var tr = document.createElement("tr");
-		var td = document.createElement("td");
-		var text = document.createTextNode(text); 
-		td.className = "xsmall bright lesson";
+    // we iterate through weeks until we find today's week
+    var index = 0;
 
-		wrapper.appendChild(tr);
-		tr.appendChild(td);
-		td.appendChild(text);
+    while (m_startdate.isBefore(m_today, 'week')) {
+      index = (index + 1) % pattern.length;
+      m_startdate.add(1, 'week');
+    }
 
-		return wrapper;
-	},
+    // and return the respective identifier from the pattern
+    return pattern.charAt(index);
+  },
 
-	createTimetableRow: function(time, lesson) {
-		var row = document.createElement("tr");
+  createTextOnlyDom: function(text) {
+    var wrapper = document.createElement('table');
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    var text = document.createTextNode(text); 
 
-		var tdtime = document.createElement("td");
-		tdtime.className = "xsmall dimmed lessontime";
-		if (this.config.allowHTML) {
-			tdtime.innerHTML  = time;
-		} else {
-			tdtime.appendChild(
-				document.createTextNode(time)
-			);
-		}
-		row.appendChild(tdtime);
+    td.className = 'xsmall bright lesson';
 
-		var tdlesson = document.createElement("td");
-		tdlesson.className = "xsmall bright lesson";
-		if (this.config.allowHTML) {
-			tdlesson.innerHTML  = lesson;
-		} else {
-			tdlesson.appendChild(
-				document.createTextNode(lesson)
-			);
-		}
-		row.appendChild(tdlesson);
+    wrapper.appendChild(tr);
+    tr.appendChild(td);
+    td.appendChild(text);
 
-		return row;
-	},
+    return wrapper;
+  },
 
-	getScripts: function() {
-		return ["moment.js"];
-	},
+  createTimetableRow: function(time, lesson) {
+    var row = document.createElement('tr');
 
-	getStyles: function () {
-		return [
-			this.config.customCssFile
-		];
-	},
+    var tdtime = document.createElement('td');
 
-	getTranslations: function() {
-		return {
-			da: "translations/da.json",
-			de: "translations/de.json",
-			en: "translations/en.json",
-			fr: "translations/fr.json",
-			he: "translations/he.json",
-			hu: "translations/hu.json",
-			nb: "translations/nb.json",
-			nn: "translations/nn.json",
-			pl: "translations/pl.json",
-			sv: "translations/sv.json",
-			"zh-cn": "translations/zh-cn.json"
-		}
-	}
+    tdtime.className = 'xsmall dimmed lessontime';
+    if (this.config.allowHTML) {
+      tdtime.innerHTML = time;
+    } else {
+      tdtime.appendChild(
+        document.createTextNode(time)
+      );
+    }
+    row.appendChild(tdtime);
+
+    var tdlesson = document.createElement('td');
+
+    tdlesson.className = 'xsmall bright lesson';
+    if (this.config.allowHTML) {
+      tdlesson.innerHTML = lesson;
+    } else {
+      tdlesson.appendChild(
+        document.createTextNode(lesson)
+      );
+    }
+    row.appendChild(tdlesson);
+
+    return row;
+  },
+
+  getScripts: function() {
+    return ['moment.js'];
+  },
+
+  getStyles: function () {
+    return [
+      this.config.customCssFile
+    ];
+  },
+
+  getTranslations: function() {
+    return {
+      'da': 'translations/da.json',
+      'de': 'translations/de.json',
+      'en': 'translations/en.json',
+      'fr': 'translations/fr.json',
+      'he': 'translations/he.json',
+      'hu': 'translations/hu.json',
+      'nb': 'translations/nb.json',
+      'nn': 'translations/nn.json',
+      'pl': 'translations/pl.json',
+      'sv': 'translations/sv.json',
+      'zh-cn': 'translations/zh-cn.json'
+    };
+  }
 
 });
