@@ -11,7 +11,8 @@
     },
     "scripts": {
         "lint": "./node_modules/.bin/eslint --fix . test",
-        "test": "npm run lint && mocha --exit --timeout 10000 --bail test/**/*.spec.js"
+        "mocha": "mocha --exit --timeout 10000 test/**/*.spec.js",
+        "test": "npm run lint && npm run mocha"
     },
     "dependencies": {
         "moment": "2.29.1",

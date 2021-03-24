@@ -1,6 +1,5 @@
-
 /* Magic Mirror
- * Module: MMM_WeeklySchedule
+ * Module: MMM-WeeklySchedule
  *
  * By Ulrich Pinsdorf
  * MIT Licensed.
@@ -52,54 +51,42 @@ Module.register('MMM-WeeklySchedule', {
 	 */
   getDom: function() {
     var date; 
-    var idx;
     var weekschedule;
-    var dow;
     var lessons; 
     var timeslots;
     var row;
+    var errormsg;
 	
-    // determine type of schedule (single vs multi)
-    date = this.getDisplayDate();
-	
+    // determine type of schedule (single vs multi) and collect parameters
     if (this.config.schedule) {
-      // found a single schedule, it shall override multischedule
-      weekschedule = this.config.schedule; 
+      weekschedule = new SimpleSchedule();
+      weekschedule.timeslots = this.config.schedule.timeslots; 
+      weekschedule.lessons = this.config.schedule.lessons; 
     } else if (this.config.multischedule) {
-      // we have a multi-schedule: let's first check if required parameters are present
-      if (this.config.weekpattern === undefined) {
-        return this.createTextOnlyDom('Error: no weekpattern defined');
-      }
-      if (this.config.startdate === undefined) {
-        return this.createTextOnlyDom('Error: no startdate defined');
-      }
-
-      // fine, now we have to determine what is the right week
-      idx = getWeekFromPattern(date, startdate, pattern);
-
-      if (idx === undefined) {
-        return this.createTextOnlyDom(
-          this.translate('NO_LESSONS')
-        );
-      }
-      weekschedule = this.config.multischedule[idx];
+      weekschedule = new MultiSchedule();
+      weekschedule.timeslots = this.config.schedule.timeslots; 
+      weekschedule.lessons = this.config.schedule.lessons;
+      weekschedule.startdate = this.config.schedule.startdate;
+      weekpattern.pattern = this.config.schedule.pattern; 
     } else {
-      return this.createTextOnlyDom('Error: neither schedule nor multischedule defined in configuration');
+      return this.createTextOnlyDom('MMM-WeeklySchedule: neither schedule nor multischedule defined in configuration');
     }
 
-    // get day of week and access respective element in lessons array
-    dow = date.locale('en').format('ddd').toLowerCase();
-    lessons = weekschedule.lessons[dow];
+    // check parameters
+    errormsg = weekpattern.checkParametersMsg();
+    if (errormsg) {
+      return this.createTextOnlyDom('MMM-WeeklySchedule: ' + errormsg);
+    }
+
+    // get today's data or tomorrow's data if too late in the day
+    date = this.getDisplayDate();
+    lessons = weekschedule.lessons(date);
+    timeslots = weekschedule.timeslots(date);
 
     // no lessons today, we return default text
     if (lessons === undefined) {
-      return this.createTextOnlyDom(
-        this.translate('NO_LESSONS')
-      );
+      return this.createTextOnlyDom(this.translate('NO_LESSONS'));
     }
-
-    // get timeslots
-    timeslots = weekschedule.timeslots;
 
     // build table with timeslot definitions and lessons
     wrapper = document.createElement('table');
@@ -136,32 +123,6 @@ Module.register('MMM-WeeklySchedule', {
     }
 
     return now;
-  },
-
-  getWeekFromPattern: function(today, startdate, pattern) {
-    var m_today;
-    var m_startdate;
-    var index;
-
-    // startdate of pattern is in future
-    m_today = moment(today);
-    m_startdate = moment(startdate, 'YYYY-MM-DD'); 
-
-    if (m_today.isAfter(m_startdate)) {return undefined;}
-
-    // no proper pattern defined
-    if (pattern.length === 0) {return undefined;}
-
-    // we iterate through weeks until we find today's week
-    index = 0;
-
-    while (m_startdate.isBefore(m_today, 'week')) {
-      index = (index + 1) % pattern.length;
-      m_startdate.add(1, 'week');
-    }
-
-    // and return the respective identifier from the pattern
-    return pattern.charAt(index);
   },
 
   createTextOnlyDom: function(str) {
