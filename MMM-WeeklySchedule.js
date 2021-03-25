@@ -64,10 +64,10 @@ Module.register('MMM-WeeklySchedule', {
       weekschedule.lessons = this.config.schedule.lessons; 
     } else if (this.config.multischedule) {
       weekschedule = new MultiSchedule();
-      weekschedule.timeslots = this.config.schedule.timeslots; 
-      weekschedule.lessons = this.config.schedule.lessons;
-      weekschedule.startdate = this.config.schedule.startdate;
-      weekpattern.pattern = this.config.schedule.pattern; 
+      weekschedule.timeslots = this.config.multischedule.timeslots; 
+      weekschedule.lessons = this.config.multischedule.lessons;
+      weekschedule.startdate = this.config.multischedule.startdate;
+      weekpattern.pattern = this.config.multischedule.pattern; 
     } else {
       return this.createTextOnlyDom('MMM-WeeklySchedule: neither schedule nor multischedule defined in configuration');
     }
@@ -79,9 +79,9 @@ Module.register('MMM-WeeklySchedule', {
     }
 
     // get today's data or tomorrow's data if too late in the day
-    date = this.getDisplayDate();
-    lessons = weekschedule.lessons(date);
-    timeslots = weekschedule.timeslots(date);
+    date = moment(this.getDisplayDate());
+    lessons = weekschedule.getTodaysLessons(date);
+    timeslots = weekschedule.getTodaysTimeslots(date);
 
     // no lessons today, we return default text
     if (lessons === undefined) {
