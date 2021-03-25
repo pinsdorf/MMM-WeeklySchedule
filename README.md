@@ -106,7 +106,7 @@ Here is a working example for multi-week schedules:
 {
     module: "MMM-WeeklySchedule",
     position: "top_left",
-    header: "Household chores",
+    header: "Hermione's classes",
     config: {
 		multischedule: [
 			A: {
