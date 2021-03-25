@@ -85,6 +85,7 @@ class MultiWeekSchedule extends Schedule {
     var dow = date.locale('en').format('ddd').toLowerCase();
 
     if (weeklabel === undefined) {return undefined;}
+
     return this._schedule[weeklabel].lessons[dow];
   }
 
