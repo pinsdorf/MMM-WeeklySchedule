@@ -5,6 +5,7 @@
     "main": "MagicMirror-WeeklySchedule.js",
     "author": "Ulrich Pinsdorf",
     "license": "MIT",
+    "type": "module",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/pinsdorf/MMM-WeeklySchedule.git"
@@ -15,9 +16,10 @@
         "test": "npm run lint && npm run mocha"
     },
     "dependencies": {
-        "moment": "2.29.1",
+        "chai": "4.3.4",
         "eslint": "7.22",
         "mocha": "8.3.2",
-        "chai": "4.3.4"
+        "moment": "2.29.1",
+        "require": "^0.4.4"
     }
 }

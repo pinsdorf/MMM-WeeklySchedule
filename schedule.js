@@ -1,5 +1,3 @@
-const moment = require('moment');
-
 class Schedule {    
 
   constructor(schedule) {
@@ -29,7 +27,7 @@ class Schedule {
   getTodaysLessons(date) {
     var dow = moment(date).locale('en').format('ddd').toLowerCase(); // 'sun', 'mon', 'tue', ...
 
-    return this._schedule.lessons[dow];     
+    return this._schedule.lessons[dow];
   }
 
   getTodaysTimeslots(date) {
@@ -40,8 +38,8 @@ class Schedule {
 class MultiWeekSchedule extends Schedule {
   constructor(schedule, startdate, pattern) {
     super(schedule);
-    this._startdate = startdate;
-    this._pattern = pattern; 
+    this._startdate = moment(startdate);
+    this._pattern = pattern;
   }
 
   get schedule() {
@@ -90,33 +88,31 @@ class MultiWeekSchedule extends Schedule {
   }
 
   getTodaysTimeslots(date) {
-    var weeklabel = this._getWeeklabelFromPattern(date, this._startdate, this._pattern);
+    var weeklabel = this._getWeeklabelFromPattern(date);
 
     if (weeklabel === undefined) {return undefined;}
 
     return this._schedule[weeklabel].timeslots;
   }
 
-  _getWeeklabelFromPattern(date, startdate, pattern) {
+  _getWeeklabelFromPattern(date) {
     // startdate is in future, so no lessons
-    if (startdate.isAfter(date)) {return undefined;}
+    if (this._startdate.isAfter(date)) {return undefined;}
 
     // no proper pattern defined
-    if (pattern.length === 0) {return undefined;}
+    if (this._pattern.length === 0) {return undefined;}
 
     // we iterate through weeks until we find today's week
     let index = 0;
-    let weekiterator = moment(startdate);
+    let weekiterator = this._startdate;
 
     while (weekiterator.isBefore(date, 'week')) {
-      index = (index + 1) % pattern.length;
+      index = (index + 1) % this._pattern.length;
       weekiterator.add(1, 'week');
     }
 
     // and return the respective identifier from the pattern
-    return pattern.charAt(index);
+    return this._pattern.charAt(index);
   }
 
 }
-
-module.exports = { Schedule, MultiWeekSchedule };

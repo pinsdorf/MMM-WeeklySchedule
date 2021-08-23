@@ -5,6 +5,7 @@
  * MIT Licensed.
  */
 
+
 Module.register('MMM-WeeklySchedule', {
 
   defaults: {
@@ -20,9 +21,9 @@ Module.register('MMM-WeeklySchedule', {
   requiresVersion: '2.1.0', // Required version of MagicMirror
 
   /* start()
-	 * Start module after all modules have been loaded
-	 * by the MagicMirror framework
-	 */
+   * Start module after all modules have been loaded
+   * by the MagicMirror framework
+   */
   start: function() {
     // Schedule update timer.
     var self = this;
@@ -31,12 +32,12 @@ Module.register('MMM-WeeklySchedule', {
       self.updateDom(self.config.fadeSpeed);
     }, this.config.updateInterval);
 
-    this.loaded = true;		
+    this.loaded = true;
   },
 
   /* getHeader()
-	 * Create the module header. Regards configuration showWeekdayinHeader 
-	 */
+   * Create the module header. Regards configuration showWeekdayinHeader 
+   */
   getHeader: function() {
     var header = this.data.header;
 
@@ -47,8 +48,8 @@ Module.register('MMM-WeeklySchedule', {
   },
 
   /* getDom()
-	 * Create the DOM to show content
-	 */
+   * Create the DOM to show content
+   */
   getDom: function() {
     var date; 
     var weekschedule;
@@ -56,24 +57,22 @@ Module.register('MMM-WeeklySchedule', {
     var timeslots;
     var row;
     var errormsg;
-	
+
     // determine type of schedule (single vs multi) and collect parameters
     if (this.config.schedule) {
-      weekschedule = new SimpleSchedule();
-      weekschedule.timeslots = this.config.schedule.timeslots; 
-      weekschedule.lessons = this.config.schedule.lessons; 
+      weekschedule = new Schedule(this.config.schedule);
     } else if (this.config.multischedule) {
-      weekschedule = new MultiSchedule();
-      weekschedule.timeslots = this.config.multischedule.timeslots; 
-      weekschedule.lessons = this.config.multischedule.lessons;
-      weekschedule.startdate = this.config.multischedule.startdate;
-      weekpattern.pattern = this.config.multischedule.pattern; 
+      weekschedule = new MultiWeekSchedule(
+                           this.config.multischedule,
+                           this.config.startdate,
+                           this.config.weekpattern
+      );
     } else {
       return this.createTextOnlyDom('MMM-WeeklySchedule: neither schedule nor multischedule defined in configuration');
     }
 
     // check parameters
-    errormsg = weekpattern.checkParametersMsg();
+    errormsg = weekschedule.checkParametersMsg();
     if (errormsg) {
       return this.createTextOnlyDom('MMM-WeeklySchedule: ' + errormsg);
     }
@@ -114,7 +113,7 @@ Module.register('MMM-WeeklySchedule', {
     } else {
       threshold = moment().endOf('day');
     }
-		
+
     // get the current time and increment by one day if threshold time has passed
     now = moment();
 
@@ -172,7 +171,10 @@ Module.register('MMM-WeeklySchedule', {
   },
 
   getScripts: function() {
-    return ['moment.js'];
+    return [
+      'moment.js',
+      'schedule.js'
+    ];
   },
 
   getStyles: function () {
