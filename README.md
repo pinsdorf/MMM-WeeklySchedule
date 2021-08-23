@@ -21,6 +21,14 @@ This module supports multi-week schedules, i.e. "A weeks" and "B weeks". See sec
 3. Navigate into folder `MMM-WeeklySchedule`.
 4. Execute `npm install` to install the node dependencies.
 
+The command sequence would look like this:
+```
+cd ~/MagicMirror/modules
+git clone https://github.com/pinsdorf/MMM-WeeklySchedule.git
+cd MMM-WeeklySchedule
+npm install
+```
+
 # Config
 The entry in `config.js` can include the following options. You have to distinguish if you want to use this module for weekly recurring schedules (**Single**) or if you have alternating week patterns (**Multi**). The table below marks which module config options are being used for which use case.
 
@@ -110,7 +118,7 @@ Here is a working example for multi-week schedules:
     config: {
 		multischedule: [
 			A: {
-            	timeslots: [ "8:00", "10:00", "12:00", "14:00", "16:00" ],
+                                timeslots: [ "8:00", "10:00", "12:00", "14:00", "16:00" ],
 				lessons: {
 					mon: [ "Potions", "Defense against the Dark Arts", "Lunch Break", "Transfiguration" ],  
 					tue: [ "", "Astronomy", "Lunch Break", "Charms", "History of Magic" ],
@@ -122,7 +130,7 @@ Here is a working example for multi-week schedules:
 				}
             },
 			B: {
-            	timeslots: [ "8:00", "10:00", "12:00", "14:00", "16:00" ],
+                                timeslots: [ "8:00", "10:00", "12:00", "14:00", "16:00" ],
 				lessons: {
 					// no entries for monday  
 					tue: [ "", "Astronomy", "Lunch Break", "Charms", "History of Magic" ],
@@ -134,9 +142,9 @@ Here is a working example for multi-week schedules:
 			}
 		],
 		weekpattern: 'AB', // weeks applied like ABABABABA...
-		startdate: '2021-03-01', 
+		startdate: '2021-08-01', 
 		updateInterval: 1 * 60 * 60 * 1000, // every hour
-		showNextDayAfter: undefined
+		showNextDayAfter: '18:00'
     }
 },
 ```
