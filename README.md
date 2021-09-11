@@ -158,6 +158,7 @@ Thanks to many contributions by the community this module has been localized for
 |he    | Hebrew             |
 |hu    | Hungary            |
 |nb    | Norwegian Bokmål   |
+|nl    | Dutch              |
 |nn    | Norwegian          |
 |pl    | Polish             |
 |sv    | Swedish            |
