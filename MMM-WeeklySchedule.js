@@ -159,6 +159,7 @@ Module.register("MMM-WeeklySchedule", {
 				fr: "translations/fr.json",
 				sv: "translations/sv.json",
 				nb: "translations/nb.json",
+				nl: "translations/nl.json",
 				nn: "translations/nn.json",
 				he: "translations/he.json",
 				hu: "translations/hu.json",
