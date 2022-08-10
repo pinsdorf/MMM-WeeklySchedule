@@ -65,6 +65,10 @@ Module.register("MMM-WeeklySchedule", {
 
 		// get timeslots
 		var timeslots = this.config.schedule.timeslots;
+		if ("timeslots" in lessons) {
+			timeslots = lessons.timeslots;
+			lessons = lessons.lessons;
+		}
 
 		// build table with timeslot definitions and lessons
 		wrapper = document.createElement("table");
