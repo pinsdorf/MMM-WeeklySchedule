@@ -62,6 +62,9 @@ Module.register("MMM-WeeklySchedule", {
 				this.translate("NO_LESSONS")
 			);
 		}
+		else if (typeof lessons === "string" || lessons instanceof String) {
+			lessons = this.config.schedule.lessons[lessons];
+		}
 
 		// get timeslots
 		var timeslots = this.config.schedule.timeslots;
